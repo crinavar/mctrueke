@@ -62,6 +62,7 @@ int main(int argc, char **argv){
         pcg32_random_t trng;
 		#pragma omp parallel default(none) shared(s) private(tid, nt, r, a, b, trng) proc_bind(spread) num_threads(s.rthreads)
 		{
+            double st1, st2;
 			/* set the thread */
 			threadset(&s, &tid, &nt, &r);
 			a = tid * r;
@@ -74,13 +75,14 @@ int main(int argc, char **argv){
 
 			/* equilibration */
             if(tid == 0){
-            
+                st1 = omp_get_wtime();
             }
             // equilibration
 			metropolis(&s, tid, a, b, s.ds, &trng);
-            //#pragma omp barrier
+            #pragma omp barrier
             if(tid == 0){
-                //printf("%f\n", 1000000.0 * sdkGetTimerValue(&(s.ktimer))/( (double)s.ds * s.N));
+                st2 = omp_get_wtime();
+                printf("spin time = %f secs\n", st2-st1);
             }
 			/* parallel tempering */
 			pt(&s, tid, a, b, &trng);

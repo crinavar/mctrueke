@@ -1,7 +1,1 @@
-# ignore some folders
-bin/*
-obj/*
-dep/*
-data/*
-plots/*
-
+tags

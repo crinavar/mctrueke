@@ -157,7 +157,7 @@ void printparams(setup_t *s){
 void getparams(setup_t *s, int argc, char **argv){
 	/* if the number or arguments is not correct, stop the program */
 	if(argc != 21){
-		printf("run as:\n./bin/pt -l <L> <R> -t <T> <dT> -h <h> -s <pts> <mzone> <drop> <mcs> <meas> <period> -r <r> -x <rthreads> <sthreads>\n");
+		printf("run as:\n./bin/mctrueke -l <L> <R> -t <T> <dT> -h <h> -s <pts> <mzone> <drop> <mcs> <meas> <period> -r <r> -x <rthreads> <sthreads>\n");
 		exit(1);
 	}
 	else{
