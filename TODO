@@ -1,0 +1,17 @@
+TODO:
+
+
+
+
+
+
+
+DONE:
+    - store the exchange values in a min heap.
+    - get the "ins" lowest exchange rates.
+    - increase the size of each fragment one by one for the "ins" new elements.
+    - insert a new temperature at the location that corresponds with the replica.
+    - keep track of the last position added, in order to continue from there on the next iteration.
+    - sort the temperatures array.
+    - reset all the new active replicas to spin up.
+

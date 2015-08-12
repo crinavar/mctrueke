@@ -1,0 +1,17 @@
+# HOW TO RECOMPILE
+make clean
+make
+
+
+
+
+
+# HOW TO RUN
+# first cd to the application workspace
+cd pt_randomfield_3d/
+
+# then run (prefix optirun if using bumblebee)
+bin/mcpt <L> <T1> <dT> <h> <replicas> <pt_steps> <drop_steps> <mcsteps> <final_steps> <nblocks> <realizations>
+
+# example
+optirun bin/mcpt 128 3.0 0.1 0.0 16 10 2 2 2 2 1
