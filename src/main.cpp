@@ -102,7 +102,7 @@ int main(int argc, char **argv){
 #endif
 	/* total time */
 	printf("ok: total time %.2f secs\n", t2-t1);
-	printf("spinperf: %f ns\n", (t2-t1)/(double)s.N * (1000000000.0 / (double)s.ds));
+	printf("spinperf: %f ns\n", (t2-t1)/((double)s.R * (double)s.N) * (1000000000.0 / (double)s.ds));
 
 	/* free memory */
 	freemem(&s);
