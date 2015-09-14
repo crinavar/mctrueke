@@ -9,5 +9,9 @@ make
 # how to run
 ./bin/mctrueke -l <L> <R> -t <T> <dT> -h <h> -s <pts> <mzone> <drop> <mcs> <meas> <period> -r <r> -x <rthreads> <sthreads>
 
-# example
-bin/mctrueke -l 32 50 -t 4.7 0.02 -h 1.0 -s 2000 1000 10 1 1 -r 100 -x 2 1
+# example single core
+bin/mctrueke -l 32 50 -t 4.7 0.02 -h 1.0 -s 2000 1000 10 1 1 -r 100 -x 1 1
+
+# multi-core example: 4,2 configuration for replica,spin parallelism. 
+# note: use the OMP_PLACES variable for multi-core execution
+OMP_PLACES=cores bin/mctrueke -l 32 50 -t 4.7 0.02 -h 1.0 -s 2000 1000 10 1 1 -r 100 -x 4 2
