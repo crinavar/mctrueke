@@ -44,7 +44,7 @@ void pt(setup_t *s, int tid, int a, int b, pcg32_random_t *trng){
 		double avex = 0.0;
 		/* progress printing */
 		if( tid == 0 ){
-			printf("ptsteps.............0%%"); fflush(stdout);
+			printf("ptsteps............0%%"); fflush(stdout);
 		}
 		/* parallel tempering */
 		for(int p = 0; p < s->pts; ++p){

@@ -93,16 +93,16 @@ int main(int argc, char **argv){
 			hdist(s.hH, s.N, tid, a, b, &trng);
 
 			/* equilibration */
-            if(tid == 0){
-                st1 = omp_get_wtime();
-            }
+            //if(tid == 0){
+            //    st1 = omp_get_wtime();
+            //}
             // equilibration
 			metropolis(&s, tid, a, b, s.ds, &trng);
-            #pragma omp barrier
-            if(tid == 0){
-                st2 = omp_get_wtime();
-                printf("spin time = %f secs\n", st2-st1);
-            }
+            //#pragma omp barrier
+            //if(tid == 0){
+            //    st2 = omp_get_wtime();
+            //    printf("spin time = %f secs\n", st2-st1);
+            //}
 			/* parallel tempering */
 			pt(&s, tid, a, b, &trng);
 			#ifdef MEASURE
