@@ -1,8 +1,29 @@
-// -------------------------------------------------------------//
-// pt: parallel tempering on the GPU                            //
-// authors: Cristobal A. Navarro, Huang Wei, Youjin Deng.       //
-// last modified: 6 Nov, 2014.                                  //
-//--------------------------------------------------------------//
+//////////////////////////////////////////////////////////////////////////////////
+//                                                                              //
+//  mctrueke                                                                    //
+//  A multi-core implementation of the exchange Monte Carlo method.             //
+//                                                                              //
+//////////////////////////////////////////////////////////////////////////////////
+//                                                                              //
+//  Copyright © 2015 Cristobal A. Navarro, Wei Huang.                           //
+//                                                                              //
+//  This file is part of mctrueke.                                              //
+//  mctrueke is free software: you can redistribute it and/or modify            //
+//  it under the terms of the GNU General Public License as published by        //
+//  the Free Software Foundation, either version 3 of the License, or           //
+//  (at your option) any later version.                                         //
+//                                                                              //
+//  mctrueke is distributed in the hope that it will be useful,                 //
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of              //
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the               //
+//  GNU General Public License for more details.                                //
+//                                                                              //
+//  You should have received a copy of the GNU General Public License           //
+//  along with mctrueke.  If not, see <http://www.gnu.org/licenses/>.           //
+//                                                                              //
+//////////////////////////////////////////////////////////////////////////////////
+
+
 #ifndef _SETUP_H_
 #define _SETUP_H_
 
