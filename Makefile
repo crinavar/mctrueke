@@ -20,7 +20,8 @@ DEBUG ?= 0
 ifeq ($(DEBUG), 1)
 	CXXFLAGS = -O3 -fopenmp -g -DDEBUG
 else
-	CXXFLAGS = -O3 -fopenmp
+	CXXFLAGS = -O3 -fopenmp -fopt-info-vec-optimized -ffast-math -funsafe-loop-optimizations -ftree-loop-if-convert-stores
+	#CXXFLAGS = -O2 -fopenmp
 endif
 
 # compiler, include and lib parameters
