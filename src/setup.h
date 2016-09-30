@@ -60,13 +60,15 @@ void init(setup_t *s, int argc, char **argv){
 	s->plotfolder = "plots";
 	make_output_folders(s->obsfolder, s->plotfolder);
 #endif
-	/* random seeds */
-	s->seed = time(NULL);
-	s->nseed = s->seed + 7919;
-	/* fixed seeds */
-	//s->seed = s->nseed = 7919;
+    /* parameter seed or random seed */
+    if(s->seed != 0){
+        pcg32_srandom_r(&s->mainrng, s->seed, 1);
+    }
+    else{
+        pcg32_srandom_r(&s->mainrng, devseed(), 1);
+    }
+    s->seed = pcg32randn(&s->mainrng);
 
-	srand(s->nseed);
 	/* set the number of threads as the number of GPUs */
 	//omp_set_num_threads(s->rthreads);
     // allow nested parallelism
@@ -117,7 +119,6 @@ void malloc_arrays( setup_t *s ){
 
     
 	/* multi-core setup -- replica level paralelism */
-    const int prime = s->nseed + 17;
 	#pragma omp parallel default(none) shared(s) proc_bind(spread) num_threads(s->rthreads)
 	{
 		int tid, nt, r, k;
@@ -144,7 +145,7 @@ void malloc_arrays( setup_t *s ){
         {
             #pragma omp for
             for(int q = 0; q < s->sthreads; ++q){
-                pcg32_srandom_r(&(s->rng[tid][q]), prime + tid*s->sthreads + q, prime + 19 + tid*s->sthreads + q);
+                pcg32_srandom_r(&(s->rng[tid][q]), s->seed + tid, q);
             }
         }
 	}
@@ -177,8 +178,8 @@ void printparams(setup_t *s){
 /* get parameters */
 void getparams(setup_t *s, int argc, char **argv){
 	/* if the number or arguments is not correct, stop the program */
-	if(argc != 21){
-		printf("run as:\n./bin/mctrueke -l <L> <R> -t <T> <dT> -h <h> -s <pts> <mzone> <drop> <mcs> <meas> <period> -r <r> -x <rthreads> <sthreads>\n");
+	if(argc != 23){
+		printf("run as:\n./bin/mctrueke -l <L> <R> -t <T> <dT> -h <h> -s <pts> <mzone> <drop> <mcs> <meas> <period> -r <r> -z <seed> -x <rthreads> <sthreads>\n");
 		exit(1);
 	}
 	else{
@@ -214,6 +215,10 @@ void getparams(setup_t *s, int argc, char **argv){
 			else if(strcmp(argv[i],"-x") == 0){
 				s->rthreads = atoi(argv[i+1]);
 				s->sthreads = atoi(argv[i+2]);
+			}
+			/* seed, (pass 0 for /dev/urandom) */
+			else if(strcmp(argv[i],"-z") == 0){
+				s->seed = atoi(argv[i+1]);
 			}
 		}
 	}

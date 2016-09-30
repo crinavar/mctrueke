@@ -121,11 +121,12 @@ struct setup{
 	/* pt and simulation parameters */
 	int pts, ds, ms, fs, cs, period;
 	int blocks, realizations;
-	int seed, nseed, R;
+	int seed, oseed, R;
 	int rthreads, sthreads;
     
     // distributed rng
     pcg32_random_t **rng;
+    pcg32_random_t mainrng;
     
 	int mzone;
 	obset_t *obstable;

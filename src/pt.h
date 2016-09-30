@@ -36,6 +36,7 @@ void swap(setup_t *s, int a, int b );
 
 /* pt(): parallel tempering main loop */
 void pt(setup_t *s, int tid, int a, int b, pcg32_random_t *trng){
+        double t1;
 		/* reset ex counters */
 		reset_array<float>((float*)(s->ex + tid*(b-a)), b-a, 0.0f);
 		/* reset average ex counters */
@@ -45,6 +46,7 @@ void pt(setup_t *s, int tid, int a, int b, pcg32_random_t *trng){
 		/* progress printing */
 		if( tid == 0 ){
 			printf("ptsteps............0%%"); fflush(stdout);
+            t1 = omp_get_wtime();
 		}
 		/* parallel tempering */
 		for(int p = 0; p < s->pts; ++p){
@@ -74,7 +76,7 @@ void pt(setup_t *s, int tid, int a, int b, pcg32_random_t *trng){
 		/* progress printing */
 		if( tid  == 0 ){
 			//printf(" %.3fs ", sdkGetTimerValue(&(s->timer))/1000.0f);
-			printf("\t[<ex> = %.3f]\n\n", avex / ((double)(s->R-1)/2.0));
+			printf("\t[<ex> = %.3f] %.2f secs\n\n", avex / ((double)(s->R-1)/2.0), omp_get_wtime() - t1);
             //printindexarray<float>(s->exE, s->rts, s->R, "exE");
             //printarray<float>(s->avex, s->R, "avex");
 		}
@@ -132,13 +134,13 @@ int exchange(setup_t *s, int tid, int a, int b, int p, pcg32_random_t *trng){
 					continue;
 				}
 				delta = (1.0f/s->T[k] - 1.0f/s->T[k-1]) * (s->exE[s->rts[k-1]] - s->exE[s->rts[k]]);				
-                double randme = pcgrand(trng);
+                double randme = pcg32randn(trng);
 				//printf("\ndelta = %f e^-delta = %f (rand = %f)...", delta, exp((double)-delta), randme);
 				//getchar();
 				// do the exchange 
 				//printf("pstep = %i         exchange %i --- %i\n", p, k, k-1);
 				//getchar();
-				//if( delta < 0.0 || pcgrand(s->rng + tid) < exp(-delta) ){
+				//if( delta < 0.0 || pcg32randn(s->rng + tid) < exp(-delta) ){
 				if( delta < 0.0 || randme < exp(-delta) ){
 					/* temp swap function */
 					//printf("<before> spins for %i and %i\n", k-1, k);

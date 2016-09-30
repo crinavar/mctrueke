@@ -27,8 +27,6 @@
 
 using namespace std;
 
-// reset function
-void reset(setup_t *s);
 /* print array function */
 template <typename T>
 void printarray(T *a, int n, const char *name);
@@ -487,7 +485,7 @@ void make_realization_statistics( setup_t *s ){
 /* CPU random configuration for the lattice */
 void random_configuration(setup_t *s, int N, int* lat, pcg32_random_t *trng){
 	for(int i=0; i < N; i++){
-		if(pcgrand(trng) >= 0.5)
+		if(pcg32randn(trng) >= 0.5)
 			lat[i] =  1;
 		else
 			lat[i] = -1;

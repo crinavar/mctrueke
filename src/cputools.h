@@ -26,6 +26,17 @@
 #ifndef _CPUTOOLS_H_
 #define _CPUTOOLS_H_
 
+unsigned long devseed(){
+    unsigned long data;
+    FILE *fp;
+    fp = fopen("/dev/urandom", "r");
+    unsigned long bytes = fread(&data, sizeof(unsigned long), 1, fp);
+    fclose(fp);
+    //printf("seed = %u\n", data);
+    //getchar();
+    return data;
+}
+
 double computeF(const int *hlat, const int width, const int height, const int length){
 		double F = 0.0;
 		double mfx1=0.0;
@@ -78,8 +89,8 @@ void multicore_sweep(int *s, const int *H, const float h, const int L, const flo
                                                                 s[C(x, y, (z==0)?L-1:z-1, L)] + s[C(x, y, (z==L-1)?0:z+1, L)])+ h*(float)H[C(x, y, z, L)] );
 
                 //printf("x = %i   y = %i  z = %i\n", x, y, z); fflush(stdout);
-                if(ide <= 0.0f || pcgrand(rng) < expf( ide * B ) ){
-                //if(ide <= 0.0f || pcgrand(&(rng[tid])) < expf(ide * B) ){
+                if(ide <= 0.0f || pcg32randn(rng) < expf( ide * B ) ){
+                //if(ide <= 0.0f || pcg32randn(&(rng[tid])) < expf(ide * B) ){
                 //if(ide <= 0.0f || 0.45 < expf( ide * B ) ){
                     s[C(x, y, z, L)] = -s[C(x, y, z, L)];
                 }
@@ -96,8 +107,8 @@ void multicore_sweep(int *s, const int *H, const float h, const int L, const flo
                                                                 s[C(x, y, (z==0)?L-1:z-1, L)] + s[C(x, y, (z==L-1)?0:z+1, L)])+ h*(float)H[C(x, y, z, L)] );
 
                 //printf("x = %i   y = %i  z = %i\n", x, y, z); fflush(stdout);
-                if(ide <= 0.0f || pcgrand(rng) < expf( ide * B ) ){
-                //if(ide <= 0.0f || pcgrand(&(rng[tid])) < expf(ide * B) ){
+                if(ide <= 0.0f || pcg32randn(rng) < expf( ide * B ) ){
+                //if(ide <= 0.0f || pcg32randn(&(rng[tid])) < expf(ide * B) ){
                 //if(ide <= 0.0f || 0.45 < expf( ide * B ) ){
                     s[C(x, y, z, L)] = -s[C(x, y, z, L)];
                 }
@@ -115,8 +126,8 @@ void cpu_sweep(int *s, const int *H, const float h, const int L, const float B, 
 																s[C(x, y, (z==0)?L-1:z-1, L)] + s[C(x, y, (z==L-1)?0:z+1, L)])+ h*(float)H[C(x, y, z, L)] );
 
 				//printf("x = %i   y = %i  z = %i\n", x, y, z); fflush(stdout);
-				if(ide <= 0.0f || pcgrand(trng) < expf( ide * B ) ){
-				//if(ide <= 0.0f || pcgrand(&(rng[tid])) < expf(ide * B) ){
+				if(ide <= 0.0f || pcg32randn(trng) < expf( ide * B ) ){
+				//if(ide <= 0.0f || pcg32randn(&(rng[tid])) < expf(ide * B) ){
 				//if(ide <= 0.0f || 0.45 < expf( ide * B ) ){
 					s[C(x, y, z, L)] = -s[C(x, y, z, L)];
 				}
@@ -148,7 +159,7 @@ float computeE(const int *s, const int *H, float h, int L){
 // set a random Hi for the modle of random-field
 void random_Hi(int *hat, int N, pcg32_random_t *trng){
 for(int i=0; i < N; i++){
-		if(pcgrand(trng) >= 0.5)
+		if(pcg32randn(trng) >= 0.5)
 			hat[i] =  1;
 		else
 			hat[i] = -1;
